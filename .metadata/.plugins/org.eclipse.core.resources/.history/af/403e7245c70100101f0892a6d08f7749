@@ -1,0 +1,59 @@
+package in.himanshu.service;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Map;
+
+import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.core.io.ClassPathResource;
+
+public class ResumeServiceImpl implements ResumeService{
+
+	private ChatClient chatClient;
+	
+	public ResumeServiceImpl(ChatClient.Builder chatClient) {
+		this.chatClient=chatClient.build();
+	}
+	
+	String loadPromtFromFile(String filename) throws IOException{
+		
+		Path path = new ClassPathResource(filename).getFile().toPath();
+		
+		return Files.readString(path);
+	}
+	
+	String putValuesToTemp(String template,Map<String,String>values) {
+		
+		for(Map.Entry<String,String>entry:values.entrySet()) {
+			template.replace("{"+entry.getKey()+"}",entry.getValue());
+		};
+		
+		return template;
+	}
+	
+	
+	@Override
+	public String generateResumeResponse(String userResumeDescription) throws IOException 
+	{
+		String promtString = this.loadPromtFromFile("resume_prompt.txt");
+		
+		String promtcontent = this.putValuesToTemp(promtString,Map.of(
+				"userDescription",userResumeDescription
+		));
+		
+		Prompt promt=new Prompt(userResumeDescription);
+		
+		
+		String response = chatClient.prompt().call().content();
+		
+		//modify
+		return response;
+	}
+
+	
+	
+	
+	
+}

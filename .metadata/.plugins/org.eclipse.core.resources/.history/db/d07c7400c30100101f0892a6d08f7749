@@ -1,0 +1,7 @@
+package in.himanshu.service;
+
+public interface ReesumeService {
+
+	
+	String generateResumeResponse(String userResumeDescription);
+}

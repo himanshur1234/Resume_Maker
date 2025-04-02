@@ -1,0 +1,3 @@
+spring.application.name=Resume_AI_backend
+spring.ai.ollama.chat.model=mistral:7b
+server.port=9090

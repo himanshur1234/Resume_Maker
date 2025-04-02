@@ -1,0 +1,6 @@
+package in.himanshu;
+
+public record ResumeRequest(
+        String userDescription
+) {
+}

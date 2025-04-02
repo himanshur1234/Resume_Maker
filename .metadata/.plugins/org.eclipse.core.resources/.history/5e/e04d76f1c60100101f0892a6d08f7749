@@ -1,0 +1,23 @@
+package in.himanshu.service;
+
+import org.springframework.ai.chat.client.ChatClient;
+
+public class ResumeServiceImpl implements ResumeService{
+
+	private ChatClient chatClient;
+	
+	public ResumeServiceImpl(ChatClient.Builder chatClient) {
+		this.chatClient=chatClient.build();
+	}
+	
+	
+	@Override
+	public String generateResumeResponse(String userResumeDescription) {
+		
+		String response = chatClient.prompt().call().content();
+		
+		//modify
+		return response;
+	}
+
+}
